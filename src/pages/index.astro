@@ -1,0 +1,86 @@
+---
+
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Four Cards Problem</title>
+  </head>
+  <body>
+    <h1>Astro</h1>
+    <button id="solvePuzzle">Solve Puzzle</button>
+    <div id="progressLog"></div>
+    <script>
+      //Let addd listener to our button OLD School JavaScript Here! trying to avoid using framworks like rext to make it simple :)
+      document
+        .getElementById("solvePuzzle")
+        .addEventListener("click", function () {
+          // Define the state of the cards
+          let cards = {
+            North: "up", // or 'up'
+            East: "up", // or 'up'
+            South: "up", // or 'up'
+            West: "up", // or 'up'
+          };
+
+          function flipCard(...directions) {
+			let logMsg ='';
+            directions.forEach((direction) => {
+              cards[direction] = cards[direction] === "up" ? "down" : "up";
+			  logMsg += `${direction}=${cards[direction]}; `
+            });
+			logProgress(logMsg)
+          }
+
+          function isAllFaceUp() {
+            return Object.values(cards).every((card) => card === "up");
+          }
+
+          function rotateTable() {
+            const directions = ["North", "East", "South", "West"];
+            const randomIndex = Math.floor(Math.random() * 4);
+            const newCards = {};
+
+            directions.forEach((direction, index) => {
+              newCards[direction] =
+                cards[directions[(index + randomIndex) % 4]];
+            });
+
+            cards = newCards;
+			logProgress(`Rotating Table ${JSON.stringify( cards)}`)
+          }
+
+		  function logProgress(log) {
+			document.getElementById('progressLog').innerText += `\n${log}`
+		  }
+
+		  logProgress('Solving this puzzle')
+          while (!isAllFaceUp()) {
+            flipCard("North", "South");
+            rotateTable();
+
+            if (isAllFaceUp()) break;
+
+            flipCard("East");
+            rotateTable();
+
+            if (isAllFaceUp()) break;
+
+            flipCard("South");
+            rotateTable();
+
+            if (isAllFaceUp()) break;
+
+            //const faceDownCards = getFaceDownCards();
+            //flipCard(...faceDownCards);
+            rotateTable();
+          }
+
+		  logProgress('I\'m Done!');
+        });
+    </script>
+  </body>
+</html>
