@@ -10,9 +10,42 @@
     <title>Four Cards Problem</title>
   </head>
   <body>
-    <h1>Astro</h1>
+    <h1>Four Cards Problem</h1>
+
+    <div>
+      <label for="North">North:</label>
+      <select id="North" name="North">
+        <option value="up">Up</option>
+        <option value="down">Down</option>
+      </select>
+    </div>
+    <div>
+      <label for="East">East:</label>
+      <select id="East" name="East">
+        <option value="up">Up</option>
+        <option value="down">Down</option>
+      </select>
+    </div>
+    <div>
+      <label for="South">South:</label>
+      <select id="South" name="South">
+        <option value="up">Up</option>
+        <option value="down">Down</option>
+      </select>
+    </div>
+    <div>
+      <label for="West">West:</label>
+      <select id="West" name="West">
+        <option value="up">Up</option>
+        <option value="down">Down</option>
+      </select>
+    </div>
+    <br />
     <button id="solvePuzzle">Solve Puzzle</button>
+    <hr />
+    <center><h3>Progress</h3></center>
     <div id="progressLog"></div>
+
     <script>
       //Let addd listener to our button OLD School JavaScript Here! trying to avoid using framworks like rext to make it simple :)
       document
@@ -20,19 +53,19 @@
         .addEventListener("click", function () {
           // Define the state of the cards
           let cards = {
-            North: "up", // or 'up'
-            East: "up", // or 'up'
-            South: "up", // or 'up'
-            West: "up", // or 'up'
+            North: document.getElementById("North").value,
+            East: document.getElementById("East").value, // or 'up'
+            South: document.getElementById("South").value, // or 'up'
+            West: document.getElementById("West").value, // or 'up'
           };
 
           function flipCard(...directions) {
-			let logMsg ='';
+            let logMsg = "";
             directions.forEach((direction) => {
               cards[direction] = cards[direction] === "up" ? "down" : "up";
-			  logMsg += `${direction}=${cards[direction]}; `
+              logMsg += `${direction}=${cards[direction]}; `;
             });
-			logProgress(logMsg)
+            logProgress(logMsg);
           }
 
           function isAllFaceUp() {
@@ -50,14 +83,20 @@
             });
 
             cards = newCards;
-			logProgress(`Rotating Table ${JSON.stringify( cards)}`)
+            logProgress(`Rotating Table ${JSON.stringify(cards)}`);
           }
 
-		  function logProgress(log) {
-			document.getElementById('progressLog').innerText += `\n${log}`
-		  }
+          function logProgress(log) {
+            document.getElementById("progressLog").innerText += `\n${log}`;
+          }
 
-		  logProgress('Solving this puzzle')
+          function resetLog() {
+            document.getElementById("progressLog").innerText = "";
+          }
+
+          resetLog();
+
+          logProgress("Solving this puzzle");
           while (!isAllFaceUp()) {
             flipCard("North", "South");
             rotateTable();
@@ -79,7 +118,8 @@
             rotateTable();
           }
 
-		  logProgress('I\'m Done!');
+          createConfetti();
+          logProgress("I'm Done!");
         });
     </script>
   </body>
